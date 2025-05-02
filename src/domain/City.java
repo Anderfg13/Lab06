@@ -1,5 +1,6 @@
 package domain;
 
+
 /**
  * Clase que representa una ciudad en la simulación.
  * La ciudad es una cuadrícula de tamaño fijo (SIZE x SIZE) donde se ubican diferentes ítems,
@@ -147,16 +148,17 @@ public class City {
     public void open() throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
-
+    
     public void save() throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
-
-    public void import() throws CityException {
+    
+    public void importData() throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
+    }
+    
+    public void exportData() throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
 
-    public void export() throws CityException {
-        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
-    }
 }
