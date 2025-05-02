@@ -26,6 +26,7 @@ public class CityGUI extends JFrame {
         SIZE = theCity.getSize();
         prepareElements();
         prepareActions();
+        prepareElementsMenu();
     }
 
     /**
@@ -41,6 +42,76 @@ public class CityGUI extends JFrame {
         setSize(new Dimension(SIDE * SIZE + 15, SIDE * SIZE + 72)); 
         setResizable(false);
         photo.repaint();
+        prepareElementsMenu();
+    }
+
+    /**
+     * Prepara el menú de barra con las opciones estándar.
+     */
+    private void prepareElementsMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        // Menú Archivo
+        JMenu fileMenu = new JMenu("Archivo");
+
+        // Opciones del menú Archivo
+        JMenuItem newItem = new JMenuItem("Nuevo");
+        JMenuItem openItem = new JMenuItem("Abrir");
+        JMenuItem saveAsItem = new JMenuItem("Guardar como");
+        JMenuItem importItem = new JMenuItem("Importar");
+        JMenuItem exportAsItem = new JMenuItem("Exportar como");
+        JMenuItem exitItem = new JMenuItem("Salir");
+
+        // Agregar acciones a las opciones
+        newItem.addActionListener(e -> newFileAction());
+        openItem.addActionListener(e -> openFileAction());
+        saveAsItem.addActionListener(e -> saveAsFileAction());
+        importItem.addActionListener(e -> importFileAction());
+        exportAsItem.addActionListener(e -> exportAsFileAction());
+        exitItem.addActionListener(e -> System.exit(0));
+
+        // Agregar opciones al menú Archivo
+        fileMenu.add(newItem);
+        fileMenu.addSeparator();
+        fileMenu.add(openItem);
+        fileMenu.add(saveAsItem);
+        fileMenu.addSeparator();
+        fileMenu.add(importItem);
+        fileMenu.add(exportAsItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
+
+        // Agregar el menú Archivo a la barra de menú
+        menuBar.add(fileMenu);
+
+        // Configurar la barra de menú en la ventana principal
+        setJMenuBar(menuBar);
+    }
+
+    // Métodos de acción para las opciones del menú
+    private void newFileAction() {
+        // Lógica para crear un nuevo archivo
+        System.out.println("Nuevo archivo creado.");
+    }
+
+    private void openFileAction() {
+        // Lógica para abrir un archivo
+        System.out.println("Abrir archivo.");
+    }
+
+    private void saveAsFileAction() {
+        // Lógica para guardar un archivo como
+        System.out.println("Guardar archivo como.");
+    }
+
+    private void importFileAction() {
+        // Lógica para importar un archivo
+        System.out.println("Importar archivo.");
+    }
+
+    private void exportAsFileAction() {
+        // Lógica para exportar un archivo como
+        System.out.println("Exportar archivo como.");
     }
 
     /**
