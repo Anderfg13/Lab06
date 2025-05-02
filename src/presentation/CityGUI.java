@@ -4,9 +4,7 @@ import domain.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 
-//prueba
 
 /**
  * Clase CityGUI que representa la interfaz gráfica de la simulación de la ciudad.
@@ -17,7 +15,6 @@ public class CityGUI extends JFrame {
 
     public final int SIZE; // Tamaño de la ciudad (número de celdas)
     private JButton ticTacButton; // Botón para avanzar un turno en la simulación
-    private JPanel controlPanel; // Panel de control (no utilizado en este código)
     private PhotoCity photo; // Panel que dibuja la ciudad
     private City theCity; // Instancia de la ciudad que se está simulando
 

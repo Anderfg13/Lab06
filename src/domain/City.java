@@ -1,5 +1,4 @@
 package domain;
-import java.util.*;
 
 /**
  * Clase que representa una ciudad en la simulación.
@@ -142,5 +141,22 @@ public class City {
                 }
             }
         }
+    }
+
+
+    public void open() throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
+    }
+
+    public void save() throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
+    }
+
+    public void import() throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
+    }
+
+    public void export() throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
 }
