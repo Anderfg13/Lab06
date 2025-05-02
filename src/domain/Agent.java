@@ -1,5 +1,4 @@
 package domain;
-import java.awt.Color;
 
 /**
  * Clase abstracta que representa un agente en la simulación de la ciudad.

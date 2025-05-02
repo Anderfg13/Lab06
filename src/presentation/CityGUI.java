@@ -4,8 +4,7 @@ import domain.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-
+import java.io.File;
 
 /**
  * Clase CityGUI que representa la interfaz gráfica de la simulación de la ciudad.
@@ -91,7 +90,10 @@ public class CityGUI extends JFrame {
 
     // Métodos de acción para las opciones del menú
     private void newFileAction() {
-        
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        File selectedFile = fileChooser.getSelectedFile();
+        City.open(selectedFile);
     }
 
     private void openFileAction() {
