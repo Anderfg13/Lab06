@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
+//prueba
+
 /**
  * Clase CityGUI que representa la interfaz gráfica de la simulación de la ciudad.
  * Extiende JFrame para crear una ventana de aplicación.
