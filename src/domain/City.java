@@ -1,5 +1,8 @@
 package domain;
 
+import java.io.*;
+import java.util.*;
+import java.io.File;
 
 /**
  * Clase que representa una ciudad en la simulación.
@@ -145,19 +148,19 @@ public class City {
     }
 
 
-    public void open() throws CityException {
+    public void open(File file) throws CityException {
+        throw new CityException( "Opción en construcción.");
+    }
+    
+    public void save(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
     
-    public void save() throws CityException {
+    public void importData(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
     
-    public void importData() throws CityException {
-        throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
-    }
-    
-    public void exportData() throws CityException {
+    public void exportData(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION);
     }
 

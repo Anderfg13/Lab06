@@ -4,6 +4,7 @@ import domain.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 
 /**
@@ -90,8 +91,7 @@ public class CityGUI extends JFrame {
 
     // Métodos de acción para las opciones del menú
     private void newFileAction() {
-        // Lógica para crear un nuevo archivo
-        System.out.println("Nuevo archivo creado.");
+        
     }
 
     private void openFileAction() {
