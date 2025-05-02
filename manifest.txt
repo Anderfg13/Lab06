@@ -1,0 +1,2 @@
+Main-Class: presentation.CityGUI 
+Class-Path: lib/
