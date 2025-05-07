@@ -17,7 +17,7 @@ public class CityGUI extends JFrame {
     private JButton ticTacButton; // Botón para avanzar un turno en la simulación
     private PhotoCity photo; // Panel que dibuja la ciudad
     private City theCity; // Instancia de la ciudad que se está simulando
-
+ 
     /**
      * Constructor privado de CityGUI. Inicializa la ciudad y prepara los elementos de la interfaz.
      */
@@ -46,7 +46,7 @@ public class CityGUI extends JFrame {
     }
 
     /**
-     * Prepara el menú de barra con las opciones estándar.
+     * Prepara el menú
      */
     private void prepareElementsMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -90,30 +90,64 @@ public class CityGUI extends JFrame {
 
     // Métodos de acción para las opciones del menú
     private void newFileAction() {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(this);
-        File selectedFile = fileChooser.getSelectedFile();
-        City.open(selectedFile);
+        // Lógica para crear un nuevo archivo
+        JOptionPane.showMessageDialog(this, "Funcionalidad de 'Nuevo' no implementada.", "Información", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void openFileAction() {
-        // Lógica para abrir un archivo
-        System.out.println("Abrir archivo.");
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                theCity.open(selectedFile);
+                JOptionPane.showMessageDialog(this, "Archivo abierto correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (CityException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void saveAsFileAction() {
-        // Lógica para guardar un archivo como
-        System.out.println("Guardar archivo como.");
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                theCity.save(selectedFile);
+                JOptionPane.showMessageDialog(this, "Archivo guardado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (CityException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void importFileAction() {
-        // Lógica para importar un archivo
-        System.out.println("Importar archivo.");
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                theCity.importData(selectedFile);
+                JOptionPane.showMessageDialog(this, "Archivo importado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (CityException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void exportAsFileAction() {
-        // Lógica para exportar un archivo como
-        System.out.println("Exportar archivo como.");
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                theCity.exportData(selectedFile);
+                JOptionPane.showMessageDialog(this, "Archivo exportado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (CityException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     /**
