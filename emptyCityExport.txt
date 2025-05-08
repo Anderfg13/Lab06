@@ -1,0 +1,12 @@
+TrafficLight 0 0
+TrafficLight 0 24
+StreetLight 2 2
+SchellingPerson 3 3
+Walker 5 5
+Cheerful 6 6
+Person 10 10
+Cheerful 15 14
+Person 15 15
+StreetLight 17 17
+Walker 20 20
+SchellingPerson 22 22

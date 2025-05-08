@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SaveTest {
 
     @Test
-    public void testSaveValidFile() {
+    public void shouldSaveToValidFile() {
         City city = new City();
         File file = new File("testCity.dat");
 
@@ -24,7 +24,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveInvalidExtension() {
+    public void shouldNotSaveToFileWithInvalidExtension() {
         City city = new City();
         File file = new File("testCity.txt");
 
@@ -36,7 +36,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveIOException() {
+    public void shouldNotSaveToInvalidPath() {
         City city = new City();
         File file = new File("/invalidPath/testCity.dat"); // Ruta inválida
 
@@ -48,7 +48,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveEmptyCity() {
+    public void shouldSaveEmptyCity() {
         City city = new City(); // Ciudad vacía
         File file = new File("emptyCity.dat");
 
@@ -61,7 +61,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveFileAlreadyExists() {
+    public void shouldOverwriteExistingFile() {
         City city = new City();
         File file = new File("existingCity.dat");
 
@@ -77,7 +77,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveLargeCity() {
+    public void shouldSaveLargeCity() {
         City city = new City();
         // Simular una ciudad grande llenando la matriz con ítems
         for (int r = 0; r < 25; r++) {
@@ -97,7 +97,7 @@ public class SaveTest {
     }
 
     @Test
-    public void testSaveFileWithoutPermissions() {
+    public void shouldNotSaveToFileWithoutPermissions() {
         City city = new City();
         File file = new File("C:/restrictedCity.dat"); // Ruta donde no se tienen permisos de escritura
 

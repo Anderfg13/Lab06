@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Clase que representa una ciudad en la simulación.
@@ -182,12 +184,27 @@ public class City implements Serializable {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Guardar", file.getName());
     }
     
-    public void importData(File file) throws CityException {
+
+    public void importData00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Importar", file.getName());
     }
     
-    public void exportData(File file) throws CityException {
+    public void exportData00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Exportar", file.getName());
     }
 
+    public void exportData(File file) throws CityException {
+        try (FileWriter writer = new FileWriter(file)) {
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Item item = locations[r][c];
+                    if (item != null) {
+                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new CityException(CityException.EXPORT_ERROR + e.getMessage());
+        }
+    }
 }
