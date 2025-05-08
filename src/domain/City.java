@@ -147,19 +147,19 @@ public class City {
 
 
     public void open(File file) throws CityException {
-        throw new CityException("Opción Abrir en construcción. Archivo " + file.getName());
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Abrir", file.getName());
     }
     
     public void save(File file) throws CityException {
-        throw new CityException("Opción Guardar como en construcción. Archivo " + file.getName());
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Guardar", file.getName());
     }
     
     public void importData(File file) throws CityException {
-        throw new CityException("Opción Importar en construcción. Archivo " + file.getName());
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Importar", file.getName());
     }
     
     public void exportData(File file) throws CityException {
-        throw new CityException("Opción Exportar como en construcción. Archivo " + file.getName());
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Exportar", file.getName());
     }
 
 }

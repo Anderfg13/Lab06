@@ -63,12 +63,12 @@ public class CityGUI extends JFrame {
         JMenuItem exitItem = new JMenuItem("Salir");
 
         // Agregar acciones a las opciones
-        newItem.addActionListener(e -> newFileAction());
-        openItem.addActionListener(e -> openFileAction());
-        saveAsItem.addActionListener(e -> saveAsFileAction());
-        importItem.addActionListener(e -> importFileAction());
-        exportAsItem.addActionListener(e -> exportAsFileAction());
-        exitItem.addActionListener(e -> System.exit(0));
+        newItem.addActionListener(e -> optionNew());
+        openItem.addActionListener(e -> optionOpen());
+        saveAsItem.addActionListener(e -> optionSave());
+        importItem.addActionListener(e -> optionImport());
+        exportAsItem.addActionListener(e -> optionExport());
+        exitItem.addActionListener(e -> optionExit());
 
         // Agregar opciones al menú Archivo
         fileMenu.add(newItem);
@@ -89,14 +89,26 @@ public class CityGUI extends JFrame {
     }
 
     // Métodos de acción para las opciones del menú
-    private void newFileAction() {
-        // Lógica para crear un nuevo archivo
-        JOptionPane.showMessageDialog(this, "Funcionalidad de 'Nuevo' no implementada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+    private void optionNew() {
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Desea crear una nueva ciudad?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            theCity = new City();
+            photo.repaint();
+        }
     }
 
-    private void openFileAction() {
+    
+    private void optionExit() {
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Desea salir de la aplicación?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+    
+    private void optionOpen() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
+
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {
@@ -108,7 +120,8 @@ public class CityGUI extends JFrame {
         }
     }
 
-    private void saveAsFileAction() {
+
+    private void optionSave() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -122,7 +135,7 @@ public class CityGUI extends JFrame {
         }
     }
 
-    private void importFileAction() {
+    private void optionImport() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -136,7 +149,8 @@ public class CityGUI extends JFrame {
         }
     }
 
-    private void exportAsFileAction() {
+
+    private void optionExport() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -162,6 +176,8 @@ public class CityGUI extends JFrame {
                 }
             });
     }
+
+
 
     /**
      * Acción que se ejecuta al presionar el botón "Tic-tac". Avanza un turno en la simulación y repinta la ciudad.
