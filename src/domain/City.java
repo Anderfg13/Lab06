@@ -1,13 +1,20 @@
 package domain;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
  * Clase que representa una ciudad en la simulación.
  * La ciudad es una cuadrícula de tamaño fijo (SIZE x SIZE) donde se ubican diferentes ítems,
  * como personas, semáforos, postes de luz y otros agentes.
  */
-public class City {
+public class City implements Serializable {
+    private static final long serialVersionUID = 1L; // Versión para la serialización
+
     // Tamaño de la ciudad (número de filas y columnas)
     static private int SIZE = 25;
 
@@ -145,12 +152,33 @@ public class City {
         }
     }
 
+    public void save(File file) throws CityException {
+        if (!file.getName().endsWith(".dat")) {
+            throw new CityException(CityException.WRONG_FILE_TIPE);
+        }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(this); // Serializa el objeto City
+        } catch (Exception e) {
+            throw new CityException(CityException.SAVE_ERROR + e.getMessage());
+        }
+    }
 
-    public void open(File file) throws CityException {
+    public static City open(File file) throws CityException {
+        if (!file.getName().endsWith(".dat")) {
+            throw new CityException(CityException.WRONG_FILE_TIPE);
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (City) ois.readObject(); // Deserializa el objeto City
+        } catch (Exception e) {
+            throw new CityException(CityException.OPEN_ERROR + e.getMessage());
+        }
+    }
+
+    public void open00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Abrir", file.getName());
     }
     
-    public void save(File file) throws CityException {
+    public void save00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Guardar", file.getName());
     }
     

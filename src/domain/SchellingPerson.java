@@ -1,6 +1,7 @@
 package domain;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Clase que representa a una persona Schelling en la simulación de la ciudad.
@@ -12,8 +13,8 @@ import java.awt.Color;
  * Está satisfecha si más de 1/3 de sus vecinos son similares, pero no todos.
  * </p>
  */
-public class SchellingPerson extends Person {
-
+public class SchellingPerson extends Person implements Serializable {
+    private static final long serialVersionUID = 1L; // Versión para la serialización
     /**
      * Constructor de la clase SchellingPerson.
      * Inicializa a la persona Schelling en una posición específica de la ciudad.

@@ -1,5 +1,6 @@
 package domain;
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Clase que representa a una persona en la simulación de la ciudad.
@@ -7,15 +8,16 @@ import java.awt.Color;
  * Una persona tiene una posición (fila, columna) en la ciudad, un color y un estado emocional.
  * Además, puede ser influenciada por un objeto de tipo Cheerful.
  */
-public class Person extends Agent implements Item {
+public class Person extends Agent implements Item, Serializable {
+    private static final long serialVersionUID = 1L; // Versión para la serialización
     // Ciudad a la que pertenece la persona
-    protected City city;
+    protected transient City city; // Marcar como transient si no es serializable
 
     // Posición de la persona en la ciudad
     protected int row, column;    
 
-    // Color de la persona
-    protected Color color;
+    // Color de la persona (no serializable)
+    protected transient Color color; // Marcar como transient
 
     // Indica si la persona fue influenciada por un objeto Cheerful
     protected boolean wasMadeHappy = false;
@@ -33,6 +35,12 @@ public class Person extends Agent implements Item {
         this.column = column;
         this.city.setItem(row, column, (Item) this);    
         color = Color.blue;
+    }
+
+    // Método para restaurar el color después de la deserialización
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject(); // Deserializa los campos no transient
+        color = Color.blue; // Restaura el color predeterminado
     }
 
     /**

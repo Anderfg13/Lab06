@@ -1,12 +1,15 @@
 package domain;
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Clase que representa un semáforo en la simulación de la ciudad.
  * Implementa la interfaz Item y define el comportamiento de un semáforo,
  * incluyendo su cambio de color y su representación gráfica.
  */
-public class TrafficLight implements Item {
+public class TrafficLight implements Item, Serializable { // Agregar Serializable
+    private static final long serialVersionUID = 1L;
+
     // Colores que representan los estados del semáforo
     private static final Color[] COLORS = {Color.RED, Color.YELLOW, Color.GREEN, Color.YELLOW};
 

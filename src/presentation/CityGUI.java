@@ -88,7 +88,7 @@ public class CityGUI extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    // Métodos de acción para las opciones del menú
+
     private void optionNew() {
         int confirm = JOptionPane.showConfirmDialog(this, "¿Desea crear una nueva ciudad?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
@@ -108,12 +108,12 @@ public class CityGUI extends JFrame {
     private void optionOpen() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {
-                theCity.open(selectedFile);
-                JOptionPane.showMessageDialog(this, "Archivo abierto correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                theCity = City.open(selectedFile);
+                photo.repaint();
+                JOptionPane.showMessageDialog(this, "Ciudad cargada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } catch (CityException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -128,12 +128,16 @@ public class CityGUI extends JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 theCity.save(selectedFile);
-                JOptionPane.showMessageDialog(this, "Archivo guardado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ciudad guardada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } catch (CityException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
+    /**
+     * Metodo igual al de copiar pero con el 00 al inicio
+     */
 
     private void optionImport() {
         JFileChooser fileChooser = new JFileChooser();

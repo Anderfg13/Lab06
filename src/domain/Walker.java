@@ -1,5 +1,6 @@
 package domain;
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Clase que representa a un caminante (Walker) en la simulación de la ciudad.
@@ -7,9 +8,10 @@ import java.awt.Color;
  * si no hay ítems cercanos, y su estado emocional depende de su capacidad para moverse
  * o de la presencia de ítems cercanos. Su color es verde y su forma es rectangular.
  */
-public class Walker extends Person {
+public class Walker extends Person implements Serializable {
     // Fila deseada hacia la que el caminante intenta moverse
     private int desiredRow;
+    private static final long serialVersionUID = 1L; // Versión para la serialización
 
     /**
      * Constructor de la clase Walker.
