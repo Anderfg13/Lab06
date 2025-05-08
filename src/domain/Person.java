@@ -11,13 +11,13 @@ import java.io.Serializable;
 public class Person extends Agent implements Item, Serializable {
     private static final long serialVersionUID = 1L; // Versión para la serialización
     // Ciudad a la que pertenece la persona
-    protected transient City city; // Marcar como transient si no es serializable
+    protected City city; 
 
     // Posición de la persona en la ciudad
     protected int row, column;    
 
     // Color de la persona (no serializable)
-    protected transient Color color; // Marcar como transient
+    protected Color color; // Marcar como transient
 
     // Indica si la persona fue influenciada por un objeto Cheerful
     protected boolean wasMadeHappy = false;
