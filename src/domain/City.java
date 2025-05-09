@@ -197,6 +197,10 @@ public class City implements Serializable {
     }
 
     public void exportData(File file) throws CityException {
+        if (file == null) {
+            throw new CityException("El archivo no puede ser nulo.");
+        }
+
         try (FileWriter writer = new FileWriter(file)) {
             for (int r = 0; r < SIZE; r++) {
                 for (int c = 0; c < SIZE; c++) {
@@ -207,7 +211,7 @@ public class City implements Serializable {
                 }
             }
         } catch (IOException e) {
-            throw new CityException(CityException.EXPORT_ERROR + e.getMessage());
+            throw new CityException("Error al exportar la ciudad: " + e.getMessage());
         }
     }
 

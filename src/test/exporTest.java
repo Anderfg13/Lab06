@@ -33,23 +33,23 @@ public class exporTest {
     }
 
     @Test
-    public void shouldNotexportDataToInvalidPath() {
+    public void shouldNotExportDataToInvalidPath() {
         City city = new City();
         File file = new File("/invalidPath/exportDataCity.txt"); // Ruta inválida
 
         Exception exception = assertThrows(CityException.class, () -> city.exportData(file));
 
-        assertTrue(exception.getMessage().contains("Error al exportDataar la ciudad"), "El mensaje de error no es el esperado.");
+        assertTrue(exception.getMessage().contains("Error al exportar la ciudad"), "El mensaje de error no es el esperado.");
     }
 
     @Test
-    public void shouldNotexportDataToFileWithoutPermissions() {
+    public void shouldNotExportDataToFileWithoutPermissions() {
         City city = new City();
         File file = new File("C:/restrictedCityexportData.txt"); // Ruta sin permisos de escritura (en sistemas protegidos)
 
         Exception exception = assertThrows(CityException.class, () -> city.exportData(file));
 
-        assertTrue(exception.getMessage().contains("Error al exportDataar la ciudad"), "El mensaje de error no es el esperado.");
+        assertTrue(exception.getMessage().contains("Error al exportar la ciudad"), "El mensaje de error no es el esperado.");
     }
 
     @Test
