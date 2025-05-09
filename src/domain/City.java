@@ -254,7 +254,7 @@ public class City implements Serializable {
                         throw new CityException(CityException.IMPORT_ERROR + "Invalid number format in line: " + line);
                     }
                 } else {
-                    System.err.println("Invalid line format: " + line);
+                    System.err.println(CityException.INVALID_LINE_FORMAT + line);
                     throw new CityException(CityException.INVALID_LINE_FORMAT);
                     //throw new CityException(CityException.IMPORT_ERROR + "Invalid line format: " + line);
                 }
