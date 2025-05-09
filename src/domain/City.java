@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.lang.reflect.Constructor;
 
 /**
  * Clase que representa una ciudad en la simulación.
@@ -205,6 +208,59 @@ public class City implements Serializable {
             }
         } catch (IOException e) {
             throw new CityException(CityException.EXPORT_ERROR + e.getMessage());
+        }
+    }
+
+    public void importData(File file) throws CityException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim(); // Remove leading/trailing whitespace
+                if (line.isEmpty()) {
+                    continue; // Skip empty lines
+                }
+                String[] parts = line.split("\\s+"); // Split by any amount of whitespace
+                if (parts.length == 3) {
+                    String className = parts[0];
+                    try {
+                        int r = Integer.parseInt(parts[1]);
+                        int c = Integer.parseInt(parts[2]);
+
+                        // Ensure r and c are within bounds
+                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+                            try {
+                                // Use reflection to create an instance of the class
+                                Class<?> itemClass = Class.forName("domain." + className);
+                                Constructor<?> constructor = itemClass.getDeclaredConstructor(City.class, int.class, int.class);
+                                Item item = (Item) constructor.newInstance(this, r, c);
+
+                                locations[r][c] = item;
+                            } catch (ClassNotFoundException e) {
+                                System.err.println(CityException.CLASS_NOT_FOUND_ERROR  + className);
+                                throw new CityException(CityException.IMPORT_ERROR + CityException.CLASS_NOT_FOUND_ERROR + className);
+                            } catch (NoSuchMethodException e) {
+                                System.err.println(CityException.CONSTRUCTOR_NOT_FOUND_ERROR + className);
+                                throw new CityException(CityException.IMPORT_ERROR + CityException.CONSTRUCTOR_NOT_FOUND_ERROR + className);
+                            } catch (Exception e) {
+                                System.err.println(CityException.CLASS_INSTANCE_ERROR + className + " - " + e.getMessage());
+                                throw new CityException(CityException.IMPORT_ERROR + CityException.CLASS_INSTANCE_ERROR + className + " - " + e.getMessage());
+                            }
+                        } else {
+                            System.err.println("Row or column out of bounds: r=" + r + ", c=" + c);
+                            throw new CityException(CityException.IMPORT_ERROR + "Row or column out of bounds: r=" + r + ", c=" + c);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid number format in line: " + line);
+                        throw new CityException(CityException.IMPORT_ERROR + "Invalid number format in line: " + line);
+                    }
+                } else {
+                    System.err.println("Invalid line format: " + line);
+                    throw new CityException(CityException.INVALID_LINE_FORMAT);
+                    //throw new CityException(CityException.IMPORT_ERROR + "Invalid line format: " + line);
+                }
+            }
+        } catch (IOException e) {
+            throw new CityException(CityException.IMPORT_ERROR + e.getMessage());
         }
     }
 }
