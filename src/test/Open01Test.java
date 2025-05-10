@@ -8,7 +8,7 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OpenTest {
+public class Open01Test {
 
     @Test
     public void shouldOpenValidFile() {
@@ -16,11 +16,11 @@ public class OpenTest {
         File file = new File("validCity.dat");
 
         // Guardar la ciudad en un archivo válido
-        assertDoesNotThrow(() -> city.save(file));
+        assertDoesNotThrow(() -> city.save01(file));
 
         // Abrir la ciudad desde el archivo
         assertDoesNotThrow(() -> {
-            City loadedCity = City.open(file);
+            City loadedCity = City.open01(file);
             assertNotNull(loadedCity, "La ciudad cargada no debe ser nula.");
             assertEquals(city.getSize(), loadedCity.getSize(), "El tamaño de la ciudad cargada no coincide.");
         });
@@ -33,10 +33,10 @@ public class OpenTest {
         File file = new File("invalidCity.txt");
 
         Exception exception = assertThrows(CityException.class, () -> {
-            City.open(file);
+            City.open01(file);
         });
 
-        assertTrue(exception.getMessage().contains("Error al abrir la ciudad"), "El mensaje de error no es el esperado.");
+        assertEquals("El archivo debe tener la extensión .dat", exception.getMessage());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class OpenTest {
         File file = new File("nonExistentCity.dat");
 
         Exception exception = assertThrows(CityException.class, () -> {
-            City.open(file);
+            City.open01(file);
         });
 
         assertTrue(exception.getMessage().contains("Error al abrir la ciudad"), "El mensaje de error no es el esperado.");
@@ -58,7 +58,7 @@ public class OpenTest {
         assertDoesNotThrow(() -> file.createNewFile());
 
         Exception exception = assertThrows(CityException.class, () -> {
-            City.open(file);
+            City.open01(file);
         });
 
         assertTrue(exception.getMessage().contains("Error al abrir la ciudad"), "El mensaje de error no es el esperado.");
@@ -74,7 +74,7 @@ public class OpenTest {
         assertDoesNotThrow(() -> file.createNewFile());
 
         Exception exception = assertThrows(CityException.class, () -> {
-            City.open(file);
+            City.open01(file);
         });
 
         assertTrue(exception.getMessage().contains("Error al abrir la ciudad"), "El mensaje de error no es el esperado.");

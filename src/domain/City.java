@@ -157,18 +157,21 @@ public class City implements Serializable {
         }
     }
 
-    public void save(File file) throws CityException {
-        if (!file.getName().endsWith(".dat")) {
-            throw new CityException(CityException.WRONG_FILE_TIPE);
-        }
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-            oos.writeObject(this); // Serializa el objeto City
-        } catch (Exception e) {
-            throw new CityException(CityException.SAVE_ERROR + e.getMessage());
-        }
+    //Diferetentes opens
+
+    public void open00(File file) throws CityException {
+        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Abrir", file.getName());
     }
 
     public static City open(File file) throws CityException {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (City) ois.readObject(); // Deserializa el objeto City
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException("Error al abrir la ciudad."); // Mensaje de error general
+        }
+    }
+
+    public static City open01(File file) throws CityException {
         if (!file.getName().endsWith(".dat")) {
             throw new CityException(CityException.WRONG_FILE_TIPE);
         }
@@ -179,24 +182,207 @@ public class City implements Serializable {
         }
     }
 
-    public void open00(File file) throws CityException {
-        throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Abrir", file.getName());
-    }
-    
+    //Diferentes saves
     public void save00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Guardar", file.getName());
     }
     
+    public void save(File file) throws CityException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(this); // Serializa el objeto City
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException(CityException.SAVE_ERROR); // Mensaje de error general
+        }
+    }
+
+    public void save01(File file) throws CityException {
+        if (!file.getName().endsWith(".dat")) {
+            throw new CityException(CityException.WRONG_FILE_TIPE);
+        }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(this); // Serializa el objeto City
+        } catch (Exception e) {
+            throw new CityException(CityException.SAVE_ERROR + e.getMessage());
+        }
+    }
+
+    //Diferentes imports
 
     public void importData00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Importar", file.getName());
     }
+
+    public void importData(File file) throws CityException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int lineNumber = 0; // Contador de líneas
+            while ((line = reader.readLine()) != null) {
+                lineNumber++; // Incrementa el número de línea
+                line = line.trim(); // Elimina espacios en blanco al inicio y al final
+                if (line.isEmpty()) {
+                    continue; // Ignora líneas vacías
+                }
+                String[] parts = line.split("\\s+"); // Divide la línea por espacios
+                if (parts.length == 3) {
+                    String className = parts[0];
+                    try {
+                        int r = Integer.parseInt(parts[1]);
+                        int c = Integer.parseInt(parts[2]);
     
+                        // Verifica que las coordenadas estén dentro de los límites
+                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+                            try {
+                                // Usa reflexión para crear una instancia de la clase
+                                Class<?> itemClass = Class.forName("domain." + className);
+                                Constructor<?> constructor = itemClass.getDeclaredConstructor(City.class, int.class, int.class);
+                                Item item = (Item) constructor.newInstance(this, r, c);
+    
+                                locations[r][c] = item;
+                            } catch (ClassNotFoundException e) {
+                                throw new CityException("Error en la línea " + lineNumber + ": Clase no encontrada '" + className + "'.");
+                            } catch (NoSuchMethodException e) {
+                                throw new CityException("Error en la línea " + lineNumber + ": Constructor no encontrado para la clase '" + className + "'.");
+                            } catch (Exception e) {
+                                throw new CityException("Error en la línea " + lineNumber + ": No se pudo crear una instancia de la clase '" + className + "' - " + e.getMessage());
+                            }
+                        } else {
+                            throw new CityException("Error en la línea " + lineNumber + ": Coordenadas fuera de los límites (r=" + r + ", c=" + c + ").");
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new CityException("Error en la línea " + lineNumber + ": Formato de número inválido en '" + parts[1] + "' o '" + parts[2] + "'.");
+                    }
+                } else {
+                    throw new CityException("Error en la línea " + lineNumber + ": Formato de línea inválido. Se esperaban 3 elementos, pero se encontraron " + parts.length + ".");
+                }
+            }
+        } catch (IOException e) {
+            throw new CityException("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public void importData01(File file) throws CityException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim(); // Elimina espacios en blanco al inicio y al final
+                if (line.isEmpty()) {
+                    continue; // Ignora líneas vacías
+                }
+                String[] parts = line.split("\\s+"); // Divide la línea por espacios
+                if (parts.length == 3) {
+                    String className = parts[0];
+                    int r = Integer.parseInt(parts[1]);
+                    int c = Integer.parseInt(parts[2]);
+
+                    // Crear el ítem y colocarlo en la ciudad
+                    Class<?> itemClass = Class.forName("domain." + className);
+                    Constructor<?> constructor = itemClass.getDeclaredConstructor(City.class, int.class, int.class);
+                    Item item = (Item) constructor.newInstance(this, r, c);
+                    locations[r][c] = item;
+                }
+            }
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException("Error al importar la ciudad."); // Mensaje de error general
+        }
+    }
+
+    public void importData02(File file) throws CityException {
+        if (file == null) {
+            throw new CityException("El archivo no puede ser nulo.");
+        }
+
+        if (file.length() == 0) { // Verifica si el archivo está vacío
+            throw new CityException("El archivo está vacío.");
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim(); // Elimina espacios en blanco al inicio y al final
+                if (line.isEmpty()) {
+                    continue; // Ignora líneas vacías
+                }
+                String[] parts = line.split("\\s+"); // Divide la línea por espacios
+                if (parts.length == 3) {
+                    String className = parts[0];
+                    try {
+                        int r = Integer.parseInt(parts[1]);
+                        int c = Integer.parseInt(parts[2]);
+
+                        // Verifica que las coordenadas estén dentro de los límites
+                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+                            try {
+                                // Usa reflexión para crear una instancia de la clase
+                                Class<?> itemClass = Class.forName("domain." + className);
+                                Constructor<?> constructor = itemClass.getDeclaredConstructor(City.class, int.class, int.class);
+                                Item item = (Item) constructor.newInstance(this, r, c);
+
+                                locations[r][c] = item;
+                            } catch (ClassNotFoundException e) {
+                                throw new CityException("Error en la línea: Clase no encontrada '" + className + "'.");
+                            } catch (NoSuchMethodException e) {
+                                throw new CityException("Error en la línea: Constructor no encontrado para la clase '" + className + "'.");
+                            } catch (Exception e) {
+                                throw new CityException("Error en la línea: No se pudo crear una instancia de la clase '" + className + "' - " + e.getMessage());
+                            }
+                        } else {
+                            throw new CityException("Error en la línea: Coordenadas fuera de los límites (r=" + r + ", c=" + c + ").");
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new CityException("Error en la línea: Formato de número inválido en '" + parts[1] + "' o '" + parts[2] + "'.");
+                    }
+                } else {
+                    throw new CityException("Error en la línea: Formato de línea inválido. Se esperaban 3 elementos, pero se encontraron " + parts.length + ".");
+                }
+            }
+        } catch (IOException e) {
+            throw new CityException("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    //Diferentes exports
+
     public void exportData00(File file) throws CityException {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Exportar", file.getName());
     }
 
     public void exportData(File file) throws CityException {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Item item = locations[r][c];
+                    if (item != null) {
+                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
+                    }
+                }
+            }
+            writer.close();
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException("Error al exportar la ciudad."); // Mensaje de error general
+        }
+    }
+    
+
+    public void exportData01(File file) throws CityException {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Item item = locations[r][c];
+                    if (item != null) {
+                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
+                    }
+                }
+            }
+            writer.close();
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException("Error al exportar la ciudad."); // Mensaje de error general
+        }
+    }
+
+
+    public void exportData02(File file) throws CityException {
         if (file == null) {
             throw new CityException("El archivo no puede ser nulo.");
         }
@@ -215,56 +401,4 @@ public class City implements Serializable {
         }
     }
 
-    public void importData(File file) throws CityException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim(); // Remove leading/trailing whitespace
-                if (line.isEmpty()) {
-                    continue; // Skip empty lines
-                }
-                String[] parts = line.split("\\s+"); // Split by any amount of whitespace
-                if (parts.length == 3) {
-                    String className = parts[0];
-                    try {
-                        int r = Integer.parseInt(parts[1]);
-                        int c = Integer.parseInt(parts[2]);
-
-                        // Ensure r and c are within bounds
-                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
-                            try {
-                                // Use reflection to create an instance of the class
-                                Class<?> itemClass = Class.forName("domain." + className);
-                                Constructor<?> constructor = itemClass.getDeclaredConstructor(City.class, int.class, int.class);
-                                Item item = (Item) constructor.newInstance(this, r, c);
-
-                                locations[r][c] = item;
-                            } catch (ClassNotFoundException e) {
-                                System.err.println(CityException.CLASS_NOT_FOUND_ERROR  + className);
-                                throw new CityException(CityException.IMPORT_ERROR + CityException.CLASS_NOT_FOUND_ERROR + className);
-                            } catch (NoSuchMethodException e) {
-                                System.err.println(CityException.CONSTRUCTOR_NOT_FOUND_ERROR + className);
-                                throw new CityException(CityException.IMPORT_ERROR + CityException.CONSTRUCTOR_NOT_FOUND_ERROR + className);
-                            } catch (Exception e) {
-                                System.err.println(CityException.CLASS_INSTANCE_ERROR + className + " - " + e.getMessage());
-                                throw new CityException(CityException.IMPORT_ERROR + CityException.CLASS_INSTANCE_ERROR + className + " - " + e.getMessage());
-                            }
-                        } else {
-                            System.err.println("Row or column out of bounds: r=" + r + ", c=" + c);
-                            throw new CityException(CityException.IMPORT_ERROR + "Row or column out of bounds: r=" + r + ", c=" + c);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.err.println("Invalid number format in line: " + line);
-                        throw new CityException(CityException.IMPORT_ERROR + "Invalid number format in line: " + line);
-                    }
-                } else {
-                    System.err.println(CityException.INVALID_LINE_FORMAT + line);
-                    throw new CityException(CityException.INVALID_LINE_FORMAT);
-                    //throw new CityException(CityException.IMPORT_ERROR + "Invalid line format: " + line);
-                }
-            }
-        } catch (IOException e) {
-            throw new CityException(CityException.IMPORT_ERROR + e.getMessage());
-        }
-    }
 }

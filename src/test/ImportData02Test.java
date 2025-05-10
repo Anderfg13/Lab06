@@ -10,12 +10,12 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ImportTest {
+public class ImportData02Test {
 
     @Test
     public void shouldImportValidFile() {
         City city = new City();
-        File file = new File("validCityImport.txt");
+        File file = new File("validCityImport02.txt");
 
         // Crear un archivo válido
         assertDoesNotThrow(() -> {
@@ -27,7 +27,7 @@ public class ImportTest {
         });
 
         // Importar el archivo
-        assertDoesNotThrow(() -> city.importData(file));
+        assertDoesNotThrow(() -> city.importData02(file));
 
         // Verificar que los ítems se hayan importado correctamente
         assertNotNull(city.getItem(10, 10), "El ítem en (10, 10) no fue importado correctamente.");
@@ -38,9 +38,33 @@ public class ImportTest {
     }
 
     @Test
+    public void shouldNotImportNullFile() {
+        City city = new City();
+
+        // Intentar importar un archivo nulo
+        Exception exception = assertThrows(CityException.class, () -> city.importData02(null));
+        assertEquals("El archivo no puede ser nulo.", exception.getMessage());
+    }
+
+    @Test
+    public void shouldNotImportEmptyFile() {
+        City city = new City();
+        File file = new File("emptyImport02.txt");
+
+        // Crear un archivo vacío
+        assertDoesNotThrow(() -> file.createNewFile());
+
+        // Intentar importar el archivo vacío
+        Exception exception = assertThrows(CityException.class, () -> city.importData02(file));
+        assertEquals("El archivo está vacío.", exception.getMessage());
+
+        file.delete(); // Limpieza después de la prueba
+    }
+
+    @Test
     public void shouldNotImportFileWithInvalidFormat() {
         City city = new City();
-        File file = new File("invalidFormatImport.txt");
+        File file = new File("invalidFormatImport02.txt");
 
         // Crear un archivo con formato incorrecto
         assertDoesNotThrow(() -> {
@@ -50,8 +74,8 @@ public class ImportTest {
         });
 
         // Intentar importar el archivo
-        Exception exception = assertThrows(CityException.class, () -> city.importData(file));
-        assertTrue(exception.getMessage().contains("Formato de línea inválido"), "El mensaje de error no es el esperado.");
+        Exception exception = assertThrows(CityException.class, () -> city.importData02(file));
+        assertTrue(exception.getMessage().contains("Error en la línea"), "El mensaje de error no es el esperado.");
 
         file.delete(); // Limpieza después de la prueba
     }
@@ -59,7 +83,7 @@ public class ImportTest {
     @Test
     public void shouldNotImportFileWithUnknownItemType() {
         City city = new City();
-        File file = new File("unknownItemTypeImport.txt");
+        File file = new File("unknownItemTypeImport02.txt");
 
         // Crear un archivo con un tipo de ítem desconocido
         assertDoesNotThrow(() -> {
@@ -69,7 +93,7 @@ public class ImportTest {
         });
 
         // Intentar importar el archivo
-        Exception exception = assertThrows(CityException.class, () -> city.importData(file));
+        Exception exception = assertThrows(CityException.class, () -> city.importData02(file));
         assertTrue(exception.getMessage().contains("Clase no encontrada"), "El mensaje de error no es el esperado.");
 
         file.delete(); // Limpieza después de la prueba
@@ -78,7 +102,7 @@ public class ImportTest {
     @Test
     public void shouldNotImportFileWithOutOfBoundsCoordinates() {
         City city = new City();
-        File file = new File("outOfBoundsImport.txt");
+        File file = new File("outOfBoundsImport02.txt");
 
         // Crear un archivo con coordenadas fuera de los límites
         assertDoesNotThrow(() -> {
@@ -88,7 +112,7 @@ public class ImportTest {
         });
 
         // Intentar importar el archivo
-        Exception exception = assertThrows(CityException.class, () -> city.importData(file));
+        Exception exception = assertThrows(CityException.class, () -> city.importData02(file));
         assertTrue(exception.getMessage().contains("Coordenadas fuera de los límites"), "El mensaje de error no es el esperado.");
 
         file.delete(); // Limpieza después de la prueba
@@ -97,7 +121,7 @@ public class ImportTest {
     @Test
     public void shouldImportFileWithExtraSpaces() {
         City city = new City();
-        File file = new File("extraSpacesImport.txt");
+        File file = new File("extraSpacesImport02.txt");
 
         // Crear un archivo con líneas que contienen espacios adicionales
         assertDoesNotThrow(() -> {
@@ -108,7 +132,7 @@ public class ImportTest {
         });
 
         // Importar el archivo
-        assertDoesNotThrow(() -> city.importData(file));
+        assertDoesNotThrow(() -> city.importData02(file));
 
         // Verificar que los ítems se hayan importado correctamente
         assertNotNull(city.getItem(10, 10), "El ítem en (10, 10) no fue importado correctamente.");
