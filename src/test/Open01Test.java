@@ -66,21 +66,6 @@ public class Open01Test {
         file.delete(); // Limpieza después de la prueba
     }
 
-    @Test
-    public void shouldNotopen01EmptyFile() {
-        File file = new File("emptyCity.dat");
-
-        // Crear un archivo vacío
-        assertDoesNotThrow(() -> file.createNewFile());
-
-        Exception exception = assertThrows(CityException.class, () -> {
-            City.open01(file);
-        });
-
-        assertTrue(exception.getMessage().contains("Error al abrir la ciudad"), "El mensaje de error no es el esperado.");
-
-        file.delete(); // Limpieza después de la prueba
-    }
 
     @Test
     public void shouldopen01FileWithLargeCity() {

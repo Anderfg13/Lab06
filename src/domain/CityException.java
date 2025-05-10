@@ -11,6 +11,8 @@ public class CityException extends Exception {
     public static final String CLASS_NOT_FOUND_ERROR = "Error al encontrar la clase: %s";
     public static final String CONSTRUCTOR_NOT_FOUND_ERROR = "Constructor not found for class: %s";
     public static final String INVALID_LINE_FORMAT = "Formato de línea inválido: %s";
+    public static final String LINE_ERROR = "Error en la línea %d: %s";
+    public static final String READ_ERROR = "Error al leer el archivo: %s";
 
     public CityException(String formattedMessage, String optionName, String fileName) {
         super(String.format(formattedMessage, optionName, fileName));
