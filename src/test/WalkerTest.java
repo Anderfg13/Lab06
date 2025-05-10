@@ -1,6 +1,6 @@
 package test;
-import domain.*;
 
+import domain.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +16,6 @@ public class WalkerTest {
     // Ciudad y caminante utilizados en las pruebas
     private City city;
     private Walker walker;
-
-    /**
-     * Constructor por defecto de la clase WalkerTest.
-     */
-    public WalkerTest() {
-        // No se requiere inicialización adicional
-    }
 
     /**
      * Configura el entorno de prueba antes de cada método de prueba.
@@ -46,10 +39,9 @@ public class WalkerTest {
 
     /**
      * Prueba que verifica el estado inicial y las propiedades del caminante.
-     * Se asegura de que el estado inicial sea INDIFFERENT, la forma sea SQUARE y el color sea verde.
      */
     @Test
-    public void testInitialState() {
+    public void shouldHaveInitialStateIndifferent() {
         assertTrue(walker.isIndifferent(), "Estado inicial debe ser INDIFFERENT");
         assertEquals(Item.SQUARE, walker.shape(), "Forma debe ser SQUARE");
         assertEquals(Color.green, walker.getColor(), "Color debe ser verde");
@@ -57,10 +49,9 @@ public class WalkerTest {
 
     /**
      * Prueba que verifica el movimiento exitoso del caminante hacia el norte.
-     * Se asegura de que el caminante se mueva a la nueva posición y esté feliz.
      */
     @Test
-    public void testMovementWhenSpaceAvailable() {
+    public void shouldMoveWhenSpaceAvailable() {
         city.ticTac();
         assertNull(city.getItem(10, 10), "Posición original debe estar vacía");
         assertNotNull(city.getItem(9, 10), "Debe estar en la nueva posición (9,10)");
@@ -69,10 +60,9 @@ public class WalkerTest {
 
     /**
      * Prueba que verifica el comportamiento del caminante en el límite superior de la ciudad.
-     * Se asegura de que el caminante no se mueva fuera de los límites y esté insatisfecho.
      */
     @Test
-    public void testMovementAtCityBoundary() {
+    public void shouldNotMoveAtCityBoundary() {
         Walker edgeWalker = new Walker(city, 0, 5);
         city.ticTac();
         assertNotNull(city.getItem(0, 5), "Debe permanecer en (0,5)");
@@ -81,14 +71,22 @@ public class WalkerTest {
 
     /**
      * Prueba que verifica el movimiento múltiple del caminante.
-     * Se asegura de que el caminante se mueva correctamente después de varios turnos y esté feliz.
      */
     @Test
-    public void testConsecutiveMovements() {
+    public void shouldMoveConsecutively() {
         for (int i = 0; i < 3; i++) {
             city.ticTac();
         }
         assertNotNull(city.getItem(7, 10), "Debe estar en (7,10)");
         assertTrue(walker.isHappy(), "Debe estar HAPPY");
+    }
+
+    /**
+     * Prueba que verifica que el caminante se registre correctamente en la ciudad.
+     */
+    @Test
+    public void shouldRegisterPositionInCity() {
+        assertNotNull(city.getItem(10, 10), "El caminante debe estar en la posición inicial (10,10)");
+        assertSame(walker, city.getItem(10, 10), "El ítem en (10,10) debe ser el caminante creado");
     }
 }

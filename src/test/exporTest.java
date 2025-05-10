@@ -4,14 +4,13 @@ import domain.City;
 import domain.CityException;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class exporTest {
+public class ExporTest {
 
     @Test
     public void shouldexportDataToValidFile() {

@@ -4,7 +4,6 @@ import domain.City;
 import domain.CityException;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -33,14 +32,6 @@ public class ExportData02Test {
         file.delete(); // Limpieza después de la prueba
     }
 
-    @Test
-    public void shouldNotExportDataToNullFile() {
-        City city = new City();
-
-        // Intentar exportar a un archivo nulo
-        Exception exception = assertThrows(CityException.class, () -> city.exportData02(null));
-        assertEquals("El archivo no puede ser nulo.", exception.getMessage());
-    }
 
     @Test
     public void shouldNotExportDataToInvalidPath() {

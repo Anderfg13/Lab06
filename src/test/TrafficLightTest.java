@@ -1,6 +1,6 @@
 package test;
-import domain.*;
 
+import domain.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +16,6 @@ public class TrafficLightTest {
     // Ciudad y semáforo utilizados en las pruebas
     private City city;
     private TrafficLight light;
-
-    /**
-     * Constructor por defecto de la clase TrafficLightTest.
-     */
-    public TrafficLightTest() {
-        // No se requiere inicialización adicional
-    }
 
     /**
      * Configura el entorno de prueba antes de cada método de prueba.
@@ -49,7 +42,7 @@ public class TrafficLightTest {
      * Verifica que después de 4 cambios de estado, el semáforo vuelva al color rojo.
      */
     @Test
-    public void testColorCycle() {
+    public void shouldCycleColorsCorrectly() {
         // Ejecutar 4 cambios de estado (rojo → amarillo → verde → amarillo → rojo)
         for (int i = 0; i < 4; i++) {
             light.change();
@@ -62,8 +55,58 @@ public class TrafficLightTest {
      * Verifica que el semáforo se coloque correctamente en la posición especificada.
      */
     @Test
-    public void testPositionInCity() {
+    public void shouldBePlacedCorrectlyInCity() {
         TrafficLight testLight = new TrafficLight(city, 5, 5);
         assertNotNull(city.getItem(5, 5), "El semáforo debe estar en la posición (5,5)");
+        assertSame(testLight, city.getItem(5, 5), "El ítem en (5,5) debe ser el semáforo creado");
+    }
+
+    /**
+     * Prueba que el semáforo tenga el color inicial correcto.
+     */
+    @Test
+    public void shouldHaveInitialColorRed() {
+        assertEquals(Color.RED, light.getColor(), "El color inicial del semáforo debe ser ROJO");
+    }
+
+    /**
+     * Prueba que el semáforo cambie al color amarillo después de un cambio.
+     */
+    @Test
+    public void shouldChangeToYellowAfterOneChange() {
+        light.change(); // Cambiar de ROJO a AMARILLO
+        assertEquals(Color.YELLOW, light.getColor(), "El color debe ser AMARILLO después de un cambio");
+    }
+
+    /**
+     * Prueba que el semáforo cambie al color verde después de dos cambios.
+     */
+    @Test
+    public void shouldChangeToGreenAfterTwoChanges() {
+        light.change(); // Cambiar de ROJO a AMARILLO
+        light.change(); // Cambiar de AMARILLO a VERDE
+        assertEquals(Color.GREEN, light.getColor(), "El color debe ser VERDE después de dos cambios");
+    }
+
+    /**
+     * Prueba que el semáforo cambie al color amarillo después de tres cambios.
+     */
+    @Test
+    public void shouldChangeToYellowAfterThreeChanges() {
+        light.change(); // Cambiar de ROJO a AMARILLO
+        light.change(); // Cambiar de AMARILLO a VERDE
+        light.change(); // Cambiar de VERDE a AMARILLO
+        assertEquals(Color.YELLOW, light.getColor(), "El color debe ser AMARILLO después de tres cambios");
+    }
+
+    /**
+     * Prueba que el semáforo vuelva al color rojo después de cuatro cambios.
+     */
+    @Test
+    public void shouldReturnToRedAfterFourChanges() {
+        for (int i = 0; i < 4; i++) {
+            light.change();
+        }
+        assertEquals(Color.RED, light.getColor(), "El color debe ser ROJO después de cuatro cambios");
     }
 }

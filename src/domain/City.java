@@ -163,7 +163,7 @@ public class City implements Serializable {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Abrir", file.getName());
     }
 
-    public static City open(File file) throws CityException {
+    public static City open01(File file) throws CityException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (City) ois.readObject(); // Deserializa el objeto City
         } catch (Exception e) { // Captura cualquier excepción
@@ -171,7 +171,7 @@ public class City implements Serializable {
         }
     }
 
-    public static City open01(File file) throws CityException {
+    public static City open(File file) throws CityException {
         if (!file.getName().endsWith(".dat")) {
             throw new CityException(CityException.WRONG_FILE_TIPE);
         }
@@ -187,7 +187,7 @@ public class City implements Serializable {
         throw new CityException(CityException.OPTION_IN_CONSTRUCTION, "Guardar", file.getName());
     }
     
-    public void save(File file) throws CityException {
+    public void save01(File file) throws CityException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(this); // Serializa el objeto City
         } catch (Exception e) { // Captura cualquier excepción
@@ -195,7 +195,7 @@ public class City implements Serializable {
         }
     }
 
-    public void save01(File file) throws CityException {
+    public void save(File file) throws CityException {
         if (!file.getName().endsWith(".dat")) {
             throw new CityException(CityException.WRONG_FILE_TIPE);
         }
@@ -282,7 +282,7 @@ public class City implements Serializable {
                 }
             }
         } catch (Exception e) { // Captura cualquier excepción
-            throw new CityException("Error al importar la ciudad."); // Mensaje de error general
+            throw new CityException(CityException.IMPORT_ERROR); // Mensaje de error general
         }
     }
 
@@ -347,42 +347,6 @@ public class City implements Serializable {
     }
 
     public void exportData(File file) throws CityException {
-        try {
-            FileWriter writer = new FileWriter(file);
-            for (int r = 0; r < SIZE; r++) {
-                for (int c = 0; c < SIZE; c++) {
-                    Item item = locations[r][c];
-                    if (item != null) {
-                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
-                    }
-                }
-            }
-            writer.close();
-        } catch (Exception e) { // Captura cualquier excepción
-            throw new CityException("Error al exportar la ciudad."); // Mensaje de error general
-        }
-    }
-    
-
-    public void exportData01(File file) throws CityException {
-        try {
-            FileWriter writer = new FileWriter(file);
-            for (int r = 0; r < SIZE; r++) {
-                for (int c = 0; c < SIZE; c++) {
-                    Item item = locations[r][c];
-                    if (item != null) {
-                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
-                    }
-                }
-            }
-            writer.close();
-        } catch (Exception e) { // Captura cualquier excepción
-            throw new CityException("Error al exportar la ciudad."); // Mensaje de error general
-        }
-    }
-
-
-    public void exportData02(File file) throws CityException {
         if (file == null) {
             throw new CityException("El archivo no puede ser nulo.");
         }
@@ -400,5 +364,40 @@ public class City implements Serializable {
             throw new CityException("Error al exportar la ciudad: " + e.getMessage());
         }
     }
+
+    public void exportData01(File file) throws CityException {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Item item = locations[r][c];
+                    if (item != null) {
+                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
+                    }
+                }
+            }
+            writer.close();
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException(CityException.EXPORT_ERROR); // Mensaje de error general
+        }
+    }
+
+    public void exportData02(File file) throws CityException {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Item item = locations[r][c];
+                    if (item != null) {
+                        writer.write(item.getClass().getSimpleName() + " " + r + " " + c + "\n");
+                    }
+                }
+            }
+            writer.close();
+        } catch (Exception e) { // Captura cualquier excepción
+            throw new CityException("Error al exportar la ciudad."); // Mensaje de error general
+        }
+    }
+
 
 }
